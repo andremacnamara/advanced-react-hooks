@@ -22,6 +22,25 @@ function MessagesDisplay({messages}) {
   )
 }
 
+function MessagesDisplay1({messages}) {
+  const containerRef = React.useRef()
+  // 🐨 replace useEffect with useLayoutEffect
+  React.useLayoutEffect(() => {
+    containerRef.current.scrollTop = containerRef.current.scrollHeight
+  })
+
+  return (
+    <div ref={containerRef} role="log" style={{marginTop: '20px'}}>
+      {messages.map((message, index, array) => (
+        <div key={message.id}>
+          <strong>{message.author}</strong>: <span>{message.content}</span>
+          {array.length - 1 === index ? null : <hr />}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 // this is to simulate major computation/big rendering tree/etc.
 function sleep(time = 0) {
   const wakeUpTime = Date.now() + time
@@ -57,6 +76,7 @@ function App() {
       </div>
       <hr />
       <MessagesDisplay messages={messages} />
+      <MessagesDisplay1 messages={messages} />
       <SlooooowSibling />
     </div>
   )
